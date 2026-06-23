@@ -1,3 +1,4 @@
+import functools
 import socket
 import sys
 from contextlib import ExitStack as does_not_raise
@@ -147,6 +148,24 @@ def test_local_decorator_with_reference():
     router = respx.mock()
 
     @router
+    def test(respx_mock):
+        assert respx_mock is router
+
+    test()
+
+
+def test_decorator_follows_wrapped_function():
+    router = respx.mock()
+
+    def passthrough(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    @router
+    @passthrough
     def test(respx_mock):
         assert respx_mock is router
 

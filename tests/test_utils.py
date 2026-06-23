@@ -51,7 +51,7 @@ class TestGetArgSpec:
         assert arg_spec.args == ["a", "b"]
         assert arg_spec.defaults is None
 
-    def test_ignores_wrapped_chain(self) -> None:
+    def test_follows_wrapped_chain(self) -> None:
         def inner(a, b, respx_mock=None):  # pragma: no cover
             ...
 
@@ -59,6 +59,8 @@ class TestGetArgSpec:
         def wrapper(*args, **kwargs):  # pragma: no cover
             ...
 
+        # Follows __wrapped__ (inspect.signature's default) so respx detects
+        # respx_mock / route declared on a wrapped function.
         arg_spec = get_arg_spec(wrapper)
-        assert arg_spec.args == []
-        assert arg_spec.defaults is None
+        assert arg_spec.args == ["a", "b", "respx_mock"]
+        assert arg_spec.defaults == (None,)

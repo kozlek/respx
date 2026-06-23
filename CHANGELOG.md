@@ -12,6 +12,9 @@ this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - Fix `TypeError: unsupported callable` when decorating a function whose parameter is
   annotated with a name imported only under `if TYPE_CHECKING:`, on Python 3.14 where
   annotations are evaluated lazily (PEP 649) (#315)
+- Detect `respx_mock` and `route` parameters declared on functions wrapped with
+  `functools.wraps` by following the `__wrapped__` chain when introspecting decorated
+  callables (#315)
 
 ## [0.23.1] - 2026-04-08
 

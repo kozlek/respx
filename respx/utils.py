@@ -183,7 +183,7 @@ def get_arg_spec(func: Callable[..., Any]) -> ArgSpec:
 
         kwargs["annotation_format"] = annotationlib.Format.FORWARDREF
 
-    signature = inspect.signature(func, follow_wrapped=False, **kwargs)
+    signature = inspect.signature(func, **kwargs)
     positional_kinds = (
         inspect.Parameter.POSITIONAL_ONLY,
         inspect.Parameter.POSITIONAL_OR_KEYWORD,
